@@ -10,5 +10,5 @@ fetchPnpmDeps {
   inherit src;
   inherit pnpm;
   fetcherVersion = 4;
-  hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+  hash = "sha256-gjx2dkiQpxN+OUnOhQBEQSf/Jc8bOh++1eZz9wrEGAA=";
 }
