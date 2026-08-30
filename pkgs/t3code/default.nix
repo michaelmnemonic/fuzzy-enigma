@@ -295,6 +295,13 @@ EOF
     mkdir -p $out/share/t3code
     cp -r "$unpacked"/. $out/share/t3code/
 
+    # The shipped chrome-sandbox helper is not setuid inside the Nix store
+    # (setuid bits cannot survive there), and the sandbox-enabled startup
+    # path CHECK-traps with SIGILL even with it removed (this is the
+    # standard NixOS Electron tradeoff). Launch with the Chromium sandbox
+    # disabled, matching the desktop entry.
+    rm -f $out/share/t3code/chrome-sandbox
+
     # Launch the shipped Electron binary (electron-builder renamed it to
     # `t3code`). Electron derives `app.isPackaged` from the executable's base
     # name, so running nixpkgs' `electron` directly put the app in dev mode:
@@ -303,6 +310,7 @@ EOF
     # resources/app.asar (loaded automatically) and its RPATHs already point
     # at the patched nixpkgs electron dependencies.
     makeWrapper $out/share/t3code/t3code $out/bin/t3code \
+      --add-flags "--no-sandbox" \
       --add-flags "''${NIXOS_OZONE_WL:+''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true --wayland-text-input-version=3}}"
 
     # App icon for the desktop entry; upstream ships a single 1024x1024 PNG.
