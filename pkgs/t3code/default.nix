@@ -12,6 +12,7 @@
   writableTmpDirAsHomeHook,
   copyDesktopItems,
   makeDesktopItem,
+  gh,
   imagemagick,
   python3,
   rustPlatform,
@@ -311,6 +312,7 @@ EOF
     # at the patched nixpkgs electron dependencies.
     makeWrapper $out/share/t3code/t3code $out/bin/t3code \
       --add-flags "--no-sandbox" \
+      --suffix PATH : ${lib.makeBinPath [ gh ]} \
       --add-flags "''${NIXOS_OZONE_WL:+''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true --wayland-text-input-version=3}}"
 
     # App icon for the desktop entry; upstream ships a single 1024x1024 PNG.
